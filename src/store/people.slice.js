@@ -27,7 +27,40 @@ export const getStarships = createAsyncThunk(
         })
       );
       return starshipsData;
-    } catch (error) {}
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const getHomeworld = createAsyncThunk(
+  "peoples/getHomeWorld",
+  async function (link) {
+    try {
+      const homeword = await fetch(link);
+      const homewordData = await homeword.json();
+      return homewordData;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const getFilms = createAsyncThunk(
+  "peoples/getFilms",
+  async function (links) {
+    try {
+      const filmsData = await Promise.all(
+        links.map(async (link) => {
+          const film = await fetch(link);
+          const filmData = await film.json();
+          return filmData;
+        })
+      );
+      return filmsData;
+    } catch (error) {
+      throw error;
+    }
   }
 );
 
@@ -36,12 +69,18 @@ const peopleSlice = createSlice({
   initialState: {
     peoples: [],
     starships: [],
+    films: [],
+    homeworld: null,
     status: null,
     error: null,
   },
   reducers: {
     clearStateStarships(state, action) {
       state.starships = [];
+    },
+
+    clearStateFilms(state, action) {
+      state.films = [];
     },
   },
   extraReducers: (builder) => {
@@ -67,10 +106,32 @@ const peopleSlice = createSlice({
       })
       .addCase(getStarships.rejected, (state, action) => {
         console.log(action.error);
+      })
+      .addCase(getFilms.pending, (state) => {
+        state.status = "Loading";
+        state.error = null;
+      })
+      .addCase(getFilms.fulfilled, (state, action) => {
+        state.status = "Resolve";
+        state.films = action.payload;
+      })
+      .addCase(getFilms.rejected, (state, action) => {
+        console.log(action.error);
+      })
+      .addCase(getHomeworld.pending, (state) => {
+        state.status = "Loading";
+        state.error = null;
+      })
+      .addCase(getHomeworld.fulfilled, (state, action) => {
+        state.status = "Resolve";
+        state.homeworld = action.payload.name;
+      })
+      .addCase(getHomeworld.rejected, (state, action) => {
+        console.log(action.error);
       });
   },
 });
 
-export const { clearStateStarships } = peopleSlice.actions;
+export const { clearStateStarships, clearStateFilms } = peopleSlice.actions;
 
 export default peopleSlice.reducer;
