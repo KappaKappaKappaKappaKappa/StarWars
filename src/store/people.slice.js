@@ -64,12 +64,31 @@ export const getFilms = createAsyncThunk(
   }
 );
 
+export const getVehicles = createAsyncThunk(
+  "peoples/getVehicles",
+  async function (links) {
+    try {
+      const vehiclesData = await Promise.all(
+        links.map(async (link) => {
+          const vehicle = await fetch(link);
+          const vehicleData = await vehicle.json();
+          return vehicleData;
+        })
+      );
+      return vehiclesData;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
 const peopleSlice = createSlice({
   name: "peoples",
   initialState: {
     peoples: [],
     starships: [],
     films: [],
+    vehicles: [],
     homeworld: null,
     status: null,
     error: null,
@@ -81,6 +100,10 @@ const peopleSlice = createSlice({
 
     clearStateFilms(state, action) {
       state.films = [];
+    },
+
+    clearVehiclesState(state, action) {
+      state.vehicles = [];
     },
   },
   extraReducers: (builder) => {
@@ -96,6 +119,7 @@ const peopleSlice = createSlice({
       .addCase(getAllPeoples.rejected, (state, action) => {
         console.log(action.error);
       })
+
       .addCase(getStarships.pending, (state) => {
         state.status = "Loading";
         state.error = null;
@@ -107,6 +131,7 @@ const peopleSlice = createSlice({
       .addCase(getStarships.rejected, (state, action) => {
         console.log(action.error);
       })
+
       .addCase(getFilms.pending, (state) => {
         state.status = "Loading";
         state.error = null;
@@ -118,6 +143,7 @@ const peopleSlice = createSlice({
       .addCase(getFilms.rejected, (state, action) => {
         console.log(action.error);
       })
+
       .addCase(getHomeworld.pending, (state) => {
         state.status = "Loading";
         state.error = null;
@@ -128,10 +154,23 @@ const peopleSlice = createSlice({
       })
       .addCase(getHomeworld.rejected, (state, action) => {
         console.log(action.error);
+      })
+
+      .addCase(getVehicles.pending, (state) => {
+        state.status = "Loading";
+        state.error = null;
+      })
+      .addCase(getVehicles.fulfilled, (state, action) => {
+        state.status = "Resolve";
+        state.vehicles = action.payload;
+      })
+      .addCase(getVehicles.rejected, (state, action) => {
+        console.log(action.error);
       });
   },
 });
 
-export const { clearStateStarships, clearStateFilms } = peopleSlice.actions;
+export const { clearStateStarships, clearStateFilms, clearVehiclesState } =
+  peopleSlice.actions;
 
 export default peopleSlice.reducer;
