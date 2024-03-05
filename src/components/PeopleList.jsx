@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllPeoples } from "../store/people.slice";
 import { Link } from "react-router-dom";
 
-export default function PeopleList() {
+export default function PeopleList({ startViewCard, step }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -11,10 +11,12 @@ export default function PeopleList() {
   }, [dispatch]);
 
   const peoples = useSelector((state) => state.people.peoples);
+
+  const viewCards = peoples.slice(startViewCard - 1, (startViewCard - 1) + step )
   return (
-    <div className="flex gap-[15px] flex-col items-center">
-      {peoples &&
-        peoples.map((hero, index) => {
+    <div className="flex gap-[15px] flex-col items-center w-full">
+      {viewCards &&
+        viewCards.map((hero, index) => {
           return (
             <Link
               key={index}
