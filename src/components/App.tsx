@@ -53,7 +53,7 @@ const App: React.FC = () => {
     <BrowserRouter>
       <Routes>
         <Route
-          path="/"
+          path="StarWars/"
           element={
             <main className="px-[5vw] py-[5vh]">
               <section className="flex flex-col items-center">
