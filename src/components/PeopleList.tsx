@@ -1,13 +1,21 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { PeopleState } from "../store/types.people.slice";
 
-export default function PeopleList({ startViewCard, step }) {
-  const peoples = useSelector((state) => state.people.peoples);
+interface PeopleListProps {
+  startViewCard: number;
+  step: number;
+}
+
+const PeopleList: React.FC<PeopleListProps> = ({ startViewCard, step }) => {
+  const peoples = useSelector(
+    (state: { people: PeopleState }) => state.people.peoples
+  );
 
   const viewCards = peoples.slice(startViewCard - 1, startViewCard - 1 + step);
 
-  if (peoples.length === 0 ) {
+  if (peoples.length === 0) {
     return (
       <div className="w-full bg-neutral-400 rounded-[10px] text-center text-[30px]">
         <p>Loading...</p>
@@ -37,4 +45,6 @@ export default function PeopleList({ startViewCard, step }) {
         })}
     </div>
   );
-}
+};
+
+export default PeopleList;

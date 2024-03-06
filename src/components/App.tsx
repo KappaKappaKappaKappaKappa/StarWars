@@ -2,26 +2,29 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import InfoCard from "./InfoCard";
-import PeopleList from "./PeopleList";
-import { useSelector, useDispatch } from "react-redux";
 import { getAllPeoples } from "../store/people.slice";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import PeopleList from "./PeopleList";
+import { PeopleState } from "../store/types.people.slice";
 
-const App = () => {
-  const dispatch = useDispatch();
+const App: React.FC = () => {
+  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(getAllPeoples());
-  }, [dispatch]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [startViewCard, setStartViewCard] = useState<number>(1);
 
-  const [startViewCard, setStartViewCard] = useState(1);
-
-  const peoples = useSelector((state) => state.people.peoples);
+  const peoples = useAppSelector(
+    (state: { people: PeopleState }) => state.people.peoples
+  );
 
   const maxPages = Math.ceil(peoples.length / 3);
 
   const step = 3;
+
+  useEffect(() => {
+    dispatch(getAllPeoples());
+  }, [dispatch]);
 
   const viewNextPage = () => {
     if (currentPage === maxPages) {
@@ -41,7 +44,7 @@ const App = () => {
     }
   };
 
-  const goToPage = (page) => {
+  const goToPage = (page: number) => {
     setCurrentPage(page);
     setStartViewCard((page - 1) * step + 1);
   };

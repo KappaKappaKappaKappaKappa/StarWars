@@ -1,10 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  Peoples,
+  Starship,
+  Homeworld,
+  Film,
+  Vehicle,
+  PeopleState,
+} from "./types.people.slice";
 
 const peoplesUrl = "https://swapi.dev/api/people";
 
 export const getAllPeoples = createAsyncThunk(
   "peoples/getPeoples",
-  async function () {
+  async function (): Promise<Peoples> {
     try {
       const peoples = await fetch(peoplesUrl);
       const peoplesData = await peoples.json();
@@ -17,7 +25,7 @@ export const getAllPeoples = createAsyncThunk(
 
 export const getStarships = createAsyncThunk(
   "peoples/getStarships",
-  async function (links) {
+  async function (links: string[]): Promise<Starship[]> {
     try {
       const starshipsData = await Promise.all(
         links.map(async (link) => {
@@ -35,7 +43,7 @@ export const getStarships = createAsyncThunk(
 
 export const getHomeworld = createAsyncThunk(
   "peoples/getHomeWorld",
-  async function (link) {
+  async function (link: string): Promise<Homeworld> {
     try {
       const homeword = await fetch(link);
       const homewordData = await homeword.json();
@@ -48,7 +56,7 @@ export const getHomeworld = createAsyncThunk(
 
 export const getFilms = createAsyncThunk(
   "peoples/getFilms",
-  async function (links) {
+  async function (links: string[]): Promise<Film[]> {
     try {
       const filmsData = await Promise.all(
         links.map(async (link) => {
@@ -66,7 +74,7 @@ export const getFilms = createAsyncThunk(
 
 export const getVehicles = createAsyncThunk(
   "peoples/getVehicles",
-  async function (links) {
+  async function (links: string[]): Promise<Vehicle[]> {
     try {
       const vehiclesData = await Promise.all(
         links.map(async (link) => {
@@ -92,7 +100,7 @@ const peopleSlice = createSlice({
     homeworld: null,
     status: null,
     error: null,
-  },
+  } as PeopleState,
   reducers: {
     clearStateStarships(state, action) {
       state.starships = [];
