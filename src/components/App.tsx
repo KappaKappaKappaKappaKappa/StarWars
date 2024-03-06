@@ -60,7 +60,7 @@ const App: React.FC = () => {
                 <PeopleList startViewCard={startViewCard} step={step} />
                 <div className="flex gap-[10px] p-[10px] mt-[20px]">
                   <button
-                    className={`rounded-[20px] p-[10px] bg-neutral-400 ${
+                    className={`hover:opacity-80 rounded-[20px] p-[10px] bg-neutral-400 ${
                       currentPage === 1 ? "opacity-10 hover:cursor-default" : ""
                     }`}
                     onClick={viewPreviousPage}
@@ -73,7 +73,7 @@ const App: React.FC = () => {
                       className={`rounded-[20px] bg-neutral-400 p-[10px] ${
                         currentPage === index + 1
                           ? "opacity-10 hover:cursor-default"
-                          : ""
+                          : "hover:opacity-80"
                       }`}
                       onClick={() => goToPage(index + 1)}
                     >
@@ -81,7 +81,7 @@ const App: React.FC = () => {
                     </button>
                   ))}
                   <button
-                    className={`rounded-[20px] bg-neutral-400 p-[10px] ${
+                    className={`hover:opacity-80 rounded-[20px] bg-neutral-400 p-[10px] ${
                       currentPage === maxPages
                         ? "opacity-10 hover:cursor-default"
                         : ""

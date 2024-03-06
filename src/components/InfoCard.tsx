@@ -79,7 +79,7 @@ const InfoCard = () => {
     <main>
       <section className="px-[130px] py-[20px] relative">
         <button
-          className="fixed top-[50px] left-[90px] bg-neutral-400 px-[50px] py-[20px] rounded-[10px]"
+          className="hover:opacity-80 fixed top-[50px] left-[90px] bg-neutral-400 px-[50px] py-[20px] rounded-[10px]"
           onClick={backToPreviousPage}
         >
           Назад
