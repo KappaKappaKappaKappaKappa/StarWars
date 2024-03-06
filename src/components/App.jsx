@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Routes, Route } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import InfoCard from "./InfoCard";
@@ -33,6 +33,11 @@ const App = () => {
       setStartViewCard(startViewCard - step);
     }
   };
+
+  const goToPage = (page) => {
+    setCurrentPage(page);
+    setStartViewCard((page - 1) * step + 1);
+  };
   return (
     <BrowserRouter>
       <Routes>
@@ -51,9 +56,19 @@ const App = () => {
                   >
                     Прошлая страница
                   </button>
-                  <span className="rounded-[20px] bg-neutral-400 p-[10px]">
-                    {currentPage}
-                  </span>
+                  {[...Array(maxPages)].map((_, index) => (
+                    <button
+                      key={index}
+                      className={`rounded-[20px] bg-neutral-400 p-[10px] ${
+                        currentPage === index + 1
+                          ? "opacity-10 hover:cursor-default"
+                          : ""
+                      }`}
+                      onClick={() => goToPage(index + 1)}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
                   <button
                     className={`rounded-[20px] bg-neutral-400 p-[10px] ${
                       currentPage === maxPages
