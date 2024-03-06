@@ -1,18 +1,20 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllPeoples } from "../store/people.slice";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function PeopleList({ startViewCard, step }) {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getAllPeoples());
-  }, [dispatch]);
-
   const peoples = useSelector((state) => state.people.peoples);
 
-  const viewCards = peoples.slice(startViewCard - 1, (startViewCard - 1) + step )
+  const viewCards = peoples.slice(startViewCard - 1, startViewCard - 1 + step);
+
+  if (peoples.length === 0 ) {
+    return (
+      <div className="w-full bg-neutral-400 rounded-[10px] text-center text-[30px]">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex gap-[15px] flex-col items-center w-full">
       {viewCards &&

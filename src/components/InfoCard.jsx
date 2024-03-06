@@ -28,6 +28,10 @@ export default function InfoCard() {
   const vehicles = useSelector((state) => state.people.vehicles);
 
   useEffect(() => {
+    if (!peoples[id]) {
+      return;
+    }
+
     if (peoples[id].starships.length > 0) {
       dispatch(getStarships(peoples[id].starships));
     } else {
@@ -49,6 +53,14 @@ export default function InfoCard() {
     dispatch(getHomeworld(peoples[id].homeworld));
   }, [id, peoples, dispatch]);
 
+  if (!peoples[id]) {
+    return (
+      <div className="mx-[5vw] my-[5vh] bg-neutral-400 rounded-[10px] text-center text-[30px]">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <main>
       <section className="px-[130px] py-[20px]">
@@ -57,7 +69,7 @@ export default function InfoCard() {
             <h1>Имя:</h1>
             <p>{peoples[id].name}</p>
           </div>
-          
+
           <div className={classesForListItem}>
             <p>Родной мир</p>
             {status === "Loading" && <span>Loading...</span>}

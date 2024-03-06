@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import InfoCard from "./InfoCard";
 import PeopleList from "./PeopleList";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getAllPeoples } from "../store/people.slice";
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllPeoples());
+  }, [dispatch]);
+
   const [currentPage, setCurrentPage] = useState(1);
 
   const [startViewCard, setStartViewCard] = useState(1);
@@ -38,6 +45,7 @@ const App = () => {
     setCurrentPage(page);
     setStartViewCard((page - 1) * step + 1);
   };
+
   return (
     <BrowserRouter>
       <Routes>
