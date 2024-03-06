@@ -63,6 +63,10 @@ const InfoCard = () => {
     dispatch(getHomeworld(peoples[idNumber].homeworld));
   }, [idNumber, peoples, dispatch]);
 
+  const backToPreviousPage = () => {
+    window.history.back();
+  };
+
   if (!peoples[idNumber]) {
     return (
       <div className="mx-[5vw] my-[5vh] bg-neutral-400 rounded-[10px] text-center text-[30px]">
@@ -73,7 +77,13 @@ const InfoCard = () => {
 
   return (
     <main>
-      <section className="px-[130px] py-[20px]">
+      <section className="px-[130px] py-[20px] relative">
+        <button
+          className="fixed top-[50px] left-[90px] bg-neutral-400 px-[50px] py-[20px] rounded-[10px]"
+          onClick={backToPreviousPage}
+        >
+          Назад
+        </button>
         <div className="flex flex-col items-center gap-[15px]">
           <div className={classesForListItem}>
             <h1>Имя:</h1>
